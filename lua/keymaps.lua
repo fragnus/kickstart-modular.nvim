@@ -45,4 +45,20 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.keymap.set('i', 'jk', '<ESC>')
+
+-- Center vertically when navigating
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', 'n', 'nzzzv')
+vim.keymap.set('n', 'N', 'Nzzzv')
+vim.keymap.set('n', '*', '*zzzv')
+vim.keymap.set('n', '#', '#zzzv')
+
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+
+vim.keymap.set('n', '<leader>+', '<C-a>')
+vim.keymap.set('n', '<leader>-', '<C-x>')
+
 -- vim: ts=2 sts=2 sw=2 et
