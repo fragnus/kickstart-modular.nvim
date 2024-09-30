@@ -180,6 +180,10 @@ return {
         ts_ls = {},
         --
 
+        -- [omnisharp](#omnisharp)
+        omnisharp = {},
+        omnisharp_mono = {},
+
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
