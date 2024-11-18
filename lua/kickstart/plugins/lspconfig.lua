@@ -12,6 +12,11 @@ return {
       },
     },
   },
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {},
+  },
   { 'Bilal2453/luvit-meta', lazy = true },
   {
     -- Main LSP Configuration
@@ -215,7 +220,6 @@ return {
         'stylua', -- Used to format Lua code
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
