@@ -1,50 +1,18 @@
-return {
-  -- Correctly setup lspconfig for C# 🚀
-  {
-    'neovim/nvim-lspconfig',
-    opts = {
-      servers = {
-        -- Ensure mason installs the server
-        omnisharp = {},
-        omnisharp_mono = {},
-      },
-      -- configure omnisharp to fix the semantic tokens bug (really annoying)
-      setup = {
-        omnisharp = function(_, _)
-          require('lazyvim.util').on_attach(function(client, _)
-            if client.name == 'omnisharp' then
-              ---@type string[]
-              local tokenModifiers = client.server_capabilities.semanticTokensProvider.legend.tokenModifiers
-              for i, v in ipairs(tokenModifiers) do
-                tokenModifiers[i] = v:gsub(' ', '_')
-              end
-              ---@type string[]
-              local tokenTypes = client.server_capabilities.semanticTokensProvider.legend.tokenTypes
-              for i, v in ipairs(tokenTypes) do
-                tokenTypes[i] = v:gsub(' ', '_')
-              end
-            end
-          end)
-          return false
-        end,
-        omnisharp_mono = function(_, _)
-          require('lazyvim.util').on_attach(function(client, _)
-            if client.name == 'omnisharp_mono' then
-              ---@type string[]
-              local tokenModifiers = client.server_capabilities.semanticTokensProvider.legend.tokenModifiers
-              for i, v in ipairs(tokenModifiers) do
-                tokenModifiers[i] = v:gsub(' ', '_')
-              end
-              ---@type string[]
-              local tokenTypes = client.server_capabilities.semanticTokensProvider.legend.tokenTypes
-              for i, v in ipairs(tokenTypes) do
-                tokenTypes[i] = v:gsub(' ', '_')
-              end
-            end
-          end)
-          return false
-        end,
-      },
-    },
-  },
-}
+-- OmniSharp returns token names containing spaces, which breaks semantic highlighting.
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('csharp-semantic-tokens', { clear = true }),
+  callback = function(event)
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    local provider = client and client.name == 'omnisharp' and client.server_capabilities.semanticTokensProvider
+    if not provider then
+      return
+    end
+    for _, list in ipairs { provider.legend.tokenModifiers, provider.legend.tokenTypes } do
+      for i, v in ipairs(list) do
+        list[i] = v:gsub(' ', '_')
+      end
+    end
+  end,
+})
+
+return {}

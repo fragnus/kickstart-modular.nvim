@@ -187,7 +187,6 @@ return {
 
         -- [omnisharp](#omnisharp)
         omnisharp = {},
-        omnisharp_mono = {},
 
         lua_ls = {
           -- cmd = {...},
